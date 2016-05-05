@@ -49,6 +49,12 @@ referenced in the "app.json," so change that if when you change this file name.
 The "app.json" wants a simple test shell script, so this is an example.  Also
 referenced in the "app.json," so change that if when you change this file name.
 
+## "bin" dir
+
+If you need binaries not availble as modules (e.g., "module spider foo" to see
+if it's available), then you can build them into "stampede/bin" for use on 
+your nodes.
+
 # Author
 
 Ken Youens-Clark <kyclark@email.arizona.edu>
