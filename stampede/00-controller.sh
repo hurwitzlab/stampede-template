@@ -2,16 +2,25 @@
 
 set -u
 
+#
+# These arguments are what you need from the user
+#
 ARG1=""
 ARG2="1"
+
+#
+# These arguments pertain to running the pipeline
+#
 PARTITION="normal" 
 TIME="24:00:00"
 GROUP="iPlant-Collabs"
 RUN_STEP=""
 MAIL_USER=""
 MAIL_TYPE="BEGIN,END,FAIL"
-NUM_GBME_SCANS="100000"
 
+#
+# Function to print nicely formatted usage statement
+#
 function HELP() {
   printf "Usage:\n  %s -a ARG1 -b ARG2\n\n" $(basename $0)
 
@@ -24,6 +33,9 @@ function HELP() {
   exit 0
 }
 
+#
+# Print help if run with no arguments
+#
 if [[ $# -eq 0 ]]; then
   HELP
 fi
@@ -32,14 +44,24 @@ function GET_ALT_ENV() {
   env | grep $1 | sed "s/.*=//"
 }
 
+#
+# Get the arguments/options from the command line
+#
 while getopts :a:b:g:p:r:t:h OPT; do
   case $OPT in
+    #
+    # Put your arguments here, be sure to change "a," "b," etc. in "getopts"
+    #
     a)
       ARG1="$OPTARG"
       ;;
     b)
       ARG2="$OPTARG"
       ;;
+
+    #
+    # These arguments are for how to run
+    #
     g)
       GROUP="$OPTARG"
       ;;
@@ -66,19 +88,30 @@ while getopts :a:b:g:p:r:t:h OPT; do
 done
 
 #
-# Check args
+# Check args, e.g., that they have some value or point to 
+# files/dirs that actually exist.
 #
 if [[ ${#ARG1} -lt 1 ]]; then
   echo "Error: No ARG1 specified."
   exit 1
 fi
 
+#
+# All the arguments will now be written to a config file
+# to share with the sub-processes. $$ is the process ID.
+# Be sure to "export" any of your arguments you need passed
+# to the other scripts.
+#
 CONFIG=$$.conf
 CWD=$(pwd)
 echo "export PATH=$PATH:$CWD/bin"  > $CONFIG
 echo "export ARG1=$ARG1"          >> $CONFIG
 echo "export ARG2=$ARG2"          >> $CONFIG
 
+#
+# These are just to let the user know how everything was
+# interpreted / run.
+#
 echo "Run parameters:"
 echo "CONFIG      $CONFIG"
 echo "ARG1        $ARG1"
@@ -88,6 +121,9 @@ echo "PARTITION   $PARTITION"
 echo "GROUP       $GROUP"
 echo "RUN_STEP    ${RUN_STEP:-NA}"
 
+#
+# You probably don't need/want to change anything from here on.
+#
 PREV_JOB_ID=0
 i=0
 

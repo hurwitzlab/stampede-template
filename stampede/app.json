@@ -1,0 +1,59 @@
+{"available":true,
+ "checkpointable":false,
+ "defaultMemoryPerNode":32,
+ "defaultProcessorsPerNode":16,
+ "defaultMaxRunTime":"12:00:00",
+ "defaultNodeCount":1,
+ "defaultQueue":"serial",
+ "deploymentPath":"username/applications/foo-0.0.1",
+ "deploymentSystem":"data.iplantcollaborative.org",
+ "executionSystem":"tacc-stampede-username",
+ "executionType":"HPC",
+ "helpURI":"",
+ "label": "Foo",
+ "longDescription":"Cool stuff here",
+ "modules":[],
+ "name":"Mash",
+ "ontology":["http://sswapmeet.sswap.info/agave/apps/Application"],
+ "parallelism":"SERIAL",
+ "shortDescription":"Cool stuff here",
+ "tags":["pairwise"],
+ "templatePath":"stampede/foo-template.sh",
+ "testPath":"stampede/test-foo.sh",
+ "version":"0.0.1",
+ "inputs":[
+    {"id":"IN_DIR",
+     "value":
+        {"default":"",
+         "order":0,
+         "required":true,
+         "validator":"",
+         "visible":true},
+     "semantics":
+        {"ontology":["http://sswapmeet.sswap.info/mime/application/X-bam"],
+         "minCardinality":1,
+         "fileTypes":["raw-0"]},
+     "details":
+        {"description":"",
+         "label":"Directory of FASTA/Q files to compare",
+         "argument":"",
+         "showArgument":true}
+    },
+    {"id":"METADATA_FILE",
+     "value":
+        {"default":"",
+         "order":0,
+         "required":true,
+         "validator":"",
+         "visible":true},
+     "semantics": {"ontology":["xsd:string"]},
+     "details":
+        {"description":"File describing metadata characteristics of samples",
+         "label":"Metadata file",
+         "argument":"",
+         "showArgument":true}
+    }
+  ],
+  "parameters": [],
+  "outputs":[]
+}
