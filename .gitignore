@@ -18,3 +18,11 @@ nytprof.out
 *.o
 *.bs
 /_eumm/
+*.out
+*.log
+*.conf
+*.params
+*.swp
+*~
+stampede/bin
+*.tgz
