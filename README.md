@@ -24,9 +24,9 @@ In short, you need to `tenants-init` and then `clients-create` to get going.
 
 I typically have these directories in each Github repo for my apps:
 
-* scripts: code I write that I want to call in my app
-* singularity: files to build the Singularity container
-* stampede: files needed to create and kick off the app
+* *scripts*: code I write that I want to call in my app
+* *singularity*: files to build the Singularity container
+* *stampede* files needed to create and kick off the app
 
 In this repo, I also have included a "misc" directory with utility 
 programs I've written which you may find useful.
