@@ -132,6 +132,118 @@ bash program called "upload-file.sh" that deletes a file before uploading it
 as I have had problems with Agave actually merging my new and old files into
 and unusable mishmash.
 
+# Singularity
+
+## Biocontainers
+
+There are almost 6800 Biocontainer Singularity images that exist in 
+"/work/projects/singularity/TACC/biocontainers" that you can use right away.
+For an example, see "trim-galore" (https://github.com/hurwitzlab/trim-galore).
+
+## Dockerfile
+
+If you are trying to create a Singularity container from an existing Docker
+definition, you can use a definition like the one in "saffrontree" 
+(https://github.com/hurwitzlab/saffrontree).
+
+## Scratch
+
+If you are creating a container from scratch, you can follow the outline 
+provided or look at more complicated installs like those for Fizkin 
+(https://github.com/hurwitzlab/fizkin).
+
+## Image Size
+
+You will want to keep the Singularity container size in the .5-2GB range.
+If you have large data files you need for your tool such as reference 
+databases for BLAST or UProC, those should be place into the 40T disk space
+set aside for iMicrobe at "/work/05066/imicrobe/iplantc.org/data".
+
+## Making Singularity
+
+Creating a Singularity container requires root access and cannot be done on
+a Mac; therefore, I tend to use our machine "lytic." After I `make img` in 
+the "singularity" directory, I see something like this:
+
+    $ ls -lh
+    total 290M
+    -rw-r--r--. 1 kyclark staff  467 Apr 12 11:02 image.def
+    -rwxr-xr-x. 1 root    root  513M Apr 12 11:03 lc.img
+    -rw-r--r--. 1 kyclark staff  363 Apr 12 11:01 Makefile
+
+I can verify that the image works as expected:
+
+    $ ./lc.img
+    Usage: lc.py FILE
+    $ singularity exec lc.img lc.py image.def
+    There are "27" lines in "image.def"
+
+## Getting Image to Stampede2
+
+You can `scp` the image to Stampede2, but that will require MFA which always
+annoys me, so I tend to `iput` the file into the Data Store and then `iget`
+it on Stampede2 into the "stampede" directory (the deployment path so it will
+be uploaded):
+
+    [lytic@~/work/stampede2-template/singularity]$ iput lc.img
+ a   [s2:login4@/work/03137/kyclark/stampede2/stampede2-template/stampede]$ iget lc.img
+h
+
+To test that the image works on Stampede2, you must `idev` to get a compute
+node an interactive session as Singularity use is not allowed on head nodes:
+
+    $ idev
+
+
+     -> Checking on the status of development queue. OK
+
+     -> Defaults file    : ~/.idevrc
+     -> System           : stampede2
+     -> Queue            : development    (idev  default       )
+     -> Nodes            : 1              (idev  default       )
+     -> Tasks per Node   : 1              (~/.idevrc           )
+     -> Time (minutes)   : 30             (idev  default       )
+     -> Project          : iPlant-Collab  (~/.idevrc           )
+
+    -----------------------------------------------------------------
+              Welcome to the Stampede2 Supercomputer
+    -----------------------------------------------------------------
+
+    No reservation for this job
+    --> Verifying valid submit host (login4)...OK
+    --> Verifying valid jobname...OK
+    --> Enforcing max jobs per user...OK
+    --> Verifying availability of your home dir (/home1/03137/kyclark)...OK
+    --> Verifying availability of your work dir (/work/03137/kyclark/stampede2)...OK
+    --> Verifying availability of your scratch dir (/scratch/03137/kyclark)...OK
+    --> Verifying valid ssh keys...OK
+    --> Verifying access to desired queue (development)...OK
+    --> Verifying job request is within current queue limits...OK
+    --> Checking available allocation (iPlant-Collabs)...OK
+    Submitted batch job 1099613
+
+     -> After your idev job begins to run, a command prompt will appear,
+     -> and you can begin your interactive development session.
+     -> We will report the job status every 4 seconds: (PD=pending, R=running).
+
+     -> job status:  PD
+     -> job status:  R
+
+     -> Job is now running on masternode= c455-062...OK
+     -> Sleeping for 7 seconds...OK
+     -> Checking to make sure your job has initialized an env for you....OK
+     -> Creating interactive terminal session (login) on master node c455-062.
+
+    Last login: Fri Apr  6 12:00:43 2018 from login4.stampede2.tacc.utexas.edu
+    TACC Stampede2 System
+    Provisioned on 24-May-2017 at 11:47
+
+    $ module load tacc-singularity
+    $ ./lc.img app.json
+    Usage: lc.py FILE
+    $ singularity exec lc.img lc.py app.json
+    There are "59" lines in "app.json"
+
 # Author
 
 Ken Youens-Clark <kyclark@email.arizona.edu>
