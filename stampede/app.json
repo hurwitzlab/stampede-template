@@ -9,10 +9,10 @@
     "defaultProcessorsPerNode": 16,
     "defaultMaxRunTime": "12:00:00",
     "defaultNodeCount": 1,
-    "defaultQueue": "serial",
+    "defaultQueue": "normal",
     "deploymentPath": "kyclark/applications/stampede2-template-0.0.1/stampede",
     "deploymentSystem": "data.iplantcollaborative.org",
-    "executionSystem": "tacc-stampede-kyclark",
+    "executionSystem": "tacc-stampede2-kyclark",
     "executionType": "HPC",
     "helpURI": "",
     "label": "Stampede2 Template",
@@ -54,7 +54,7 @@
             "details": {
                 "description": "",
                 "label": "List of input files/directories",
-                "argument": "--input",
+                "argument": "-i ",
                 "repeatArgument": false,
                 "showArgument": true
             }
@@ -75,7 +75,7 @@
             "details": {
                 "description": "",
                 "label": "P-value",
-                "argument": "",
+                "argument": "-p ",
                 "repeatArgument": false,
                 "showArgument": true
             }
