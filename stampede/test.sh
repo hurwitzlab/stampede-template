@@ -2,7 +2,4 @@
 
 set -u
 
-ARG1="foo"
-ARG2="10"
-
-./00-controller.sh -a $ARG1 -b $ARG2
+./run.sh -i app.json -p 5

@@ -1,10 +1,21 @@
-EMAIL = user@domain.com
+.PHONY: clean up template job app test
+
+APP = stampede2-template-0.0.1
 
 clean:
-	find . \( -name \*.conf -o -name \*.out -o -name \*.log -o -name \*.params -o -name launcher-\* \) -exec rm {} \;
+	find . \( -name \*.out -o -name \*.param \) -exec rm {} \;
 
-foo:
-	./00-controller.sh -e $(EMAIL) -r 01-foo.sh -p development -t "02:00:00" -a foo
+up:
+	copy_from_manifest.py
 
-update:
-	apps-update -F app.json
+template:
+	jobs-template -A $(APP) > job.json
+
+job:
+	jobs-submit -F job.json
+
+app:
+	apps-addupdate -F app.json
+
+test: clean
+    sbatch test.sh

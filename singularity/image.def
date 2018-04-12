@@ -5,7 +5,7 @@ From: ubuntu:latest
     PATH=/app/stampede2-template/scripts:$PATH
 
 %runscript
-    exec foo.sh
+    exec wc.py
 
 %post
     apt-get update

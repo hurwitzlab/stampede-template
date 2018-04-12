@@ -1,59 +1,85 @@
-{"available":true,
- "checkpointable":false,
- "defaultMemoryPerNode":32,
- "defaultProcessorsPerNode":16,
- "defaultMaxRunTime":"12:00:00",
- "defaultNodeCount":1,
- "defaultQueue":"serial",
- "deploymentPath":"username/applications/foo-0.0.1",
- "deploymentSystem":"data.iplantcollaborative.org",
- "executionSystem":"tacc-stampede-username",
- "executionType":"HPC",
- "helpURI":"",
- "label": "Foo",
- "longDescription":"Cool stuff here",
- "modules":[],
- "name":"Mash",
- "ontology":["http://sswapmeet.sswap.info/agave/apps/Application"],
- "parallelism":"SERIAL",
- "shortDescription":"Cool stuff here",
- "tags":["pairwise"],
- "templatePath":"stampede/foo-template.sh",
- "testPath":"stampede/test-foo.sh",
- "version":"0.0.1",
- "inputs":[
-    {"id":"IN_DIR",
-     "value":
-        {"default":"",
-         "order":0,
-         "required":true,
-         "validator":"",
-         "visible":true},
-     "semantics":
-        {"ontology":["http://sswapmeet.sswap.info/mime/application/X-bam"],
-         "minCardinality":1,
-         "fileTypes":["raw-0"]},
-     "details":
-        {"description":"",
-         "label":"Directory of FASTA/Q files to compare",
-         "argument":"",
-         "showArgument":true}
-    },
-    {"id":"METADATA_FILE",
-     "value":
-        {"default":"",
-         "order":0,
-         "required":true,
-         "validator":"",
-         "visible":true},
-     "semantics": {"ontology":["xsd:string"]},
-     "details":
-        {"description":"File describing metadata characteristics of samples",
-         "label":"Metadata file",
-         "argument":"",
-         "showArgument":true}
-    }
-  ],
-  "parameters": [],
-  "outputs":[]
+{
+    "name": "stampede2-template",
+    "version": "0.0.1",
+    "shortDescription": "A tutorial on how to create an Agave app.",
+    "longDescription": "You can say more stuff here.",
+    "available": true,
+    "checkpointable": false,
+    "defaultMemoryPerNode": 32,
+    "defaultProcessorsPerNode": 16,
+    "defaultMaxRunTime": "12:00:00",
+    "defaultNodeCount": 1,
+    "defaultQueue": "serial",
+    "deploymentPath": "kyclark/applications/stampede2-template-0.0.1/stampede",
+    "deploymentSystem": "data.iplantcollaborative.org",
+    "executionSystem": "tacc-stampede-kyclark",
+    "executionType": "HPC",
+    "helpURI": "",
+    "label": "Stampede2 Template",
+    "parallelism": "SERIAL",
+    "templatePath": "template.sh",
+    "testPath": "test.sh",
+    "modules": [
+        "tacc-singularity",
+        "launcher"
+    ],
+    "tags": [
+        "imicrobe",
+        "agave"
+    ],
+    "ontology": [
+        "http://sswapmeet.sswap.info/agave/apps/Application"
+    ],
+    "inputs": [
+        {
+            "id": "INPUT",
+            "value": {
+                "default": "",
+                "order": 0,
+                "validator": "",
+                "required": true,
+                "visible": true,
+                "enquote": false
+            },
+            "semantics": {
+                "ontology": [
+                    "http://sswapmeet.sswap.info/mime/application/X-bam"
+                ],
+                "minCardinality": 1,
+                "maxCardinality": -1,
+                "fileTypes": [
+                    "raw-0"
+                ]
+            },
+            "details": {
+                "description": "",
+                "label": "List of input files/directories",
+                "argument": "--input",
+                "repeatArgument": false,
+                "showArgument": true
+            }
+        }
+    ],
+    "parameters": [
+        {
+            "id": "PVALUE",
+            "value": {
+                "default": 0.01,
+                "type": "number",
+                "order": 1,
+                "required": false,
+                "visible": true,
+                "enquote": false,
+                "validator": ""
+            },
+            "details": {
+                "description": "",
+                "label": "P-value",
+                "argument": "",
+                "repeatArgument": false,
+                "showArgument": true
+            }
+        }
+    ],
+    "outputs": []
 }

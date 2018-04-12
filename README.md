@@ -24,6 +24,9 @@ I typically have these directories in each Github repo for my apps:
 * singularity: files to build the Singularity container
 * stampede: files needed to create and kick off the app
 
+In this repo, I also have included a "misc" directory with utility 
+programs I've written which you may find useful.
+
 Let's look at each in more detail.
 
 ## scripts
@@ -71,7 +74,7 @@ Appetizer is to crowd-source the creation of new apps. If we can get
 users to help describe all the command-line options to some tool they
 wish to integrate, then it saves us that much time.
 
-You can copy and existing "app.json" from another app and edit it by
+You can copy an existing "app.json" from another app and edit it by
 hand or paste it into the "Manual Edit" mode of the "JSON" tab in The
 Appetizer. "Inputs" are assets (files/data) provided by the user which
 must be copied to the compute node before the job begins. "Parameters" 
@@ -82,9 +85,9 @@ the "Help" tab on The Appetizer for more information.
 
 This file will contain placeholders for each of the input/parameter 
 `id`s that you define in the "app.json." These will be expanded at run
-time into literal values passed from Agave. E.g., if you defined a "FILE"
-input to have a "-f " prepended, then if the user provides "myinput.txt"
-as the `FILE` argument, `${FILE}` will be turned into `-f myinput.txt`.
+time into literal values passed from Agave. E.g., if you defined an "INPUT"
+argument to have a "-i " prepended, then if the user provides "myinput.txt"
+as the `INPUT` argument, `${INPUT}` will be turned into `-i myinput.txt`.
 If you change anything in the "app.json," be sure to update "template.sh" 
 so that the argument is represented in the "template.sh" file.
 
@@ -107,7 +110,8 @@ test data I have and will `sbatch` this file to ensure my pipeline works.
 As I said, you don't have to use bash as the main entry point, but it's 
 often sufficient. I have many examples where I write entire pipelines in 
 bash (fizkin) and others where I merely pass all the arguments to some 
-more capable program (graftM).
+more capable program (graftM). If the pipeline needs to use the "launcher" 
+to get parallelization of jobs, I will probably
 
 ### Makefile
 
