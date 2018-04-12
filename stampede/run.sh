@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J fizkin
+#SBATCH -J template
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -p normal
