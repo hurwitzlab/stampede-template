@@ -1,7 +1,7 @@
 SINGULARITY = /usr/local/bin/singularity
-IMG_NAME = test.img
+IMG_NAME = lc.img
 DEF_NAME = image.def
-SIZE = 2048
+SIZE = 512
 
 run:
 	sudo $(SINGULARITY) run $(IMG_NAME)
