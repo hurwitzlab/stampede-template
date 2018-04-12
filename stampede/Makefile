@@ -17,5 +17,5 @@ job:
 app:
 	apps-addupdate -F app.json
 
-test: clean
-    sbatch test.sh
+test:
+	sbatch test.sh

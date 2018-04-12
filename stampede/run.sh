@@ -100,12 +100,12 @@ cat -n "$INPUT_FILES"
 PARAM="$$.param"
 cat /dev/null > "$PARAM"
 while read -r FILE; do
-    echo "singularity exec $IMG wc.py $FILE" >> "$PARAM"
+    echo "singularity exec $IMG lc.py $FILE" >> "$PARAM"
 done < "$INPUT_FILES"
 
 echo "Starting Launcher"
 if [[ $NUM_INPUT -lt 16 ]]; then
-    LAUNCHER_PPN=$NJOBS
+    LAUNCHER_PPN=$NUM_INPUT
 else
     LAUNCHER_PPN=16
 fi
@@ -116,5 +116,7 @@ export LAUNCHER_PPN
 $PARAMRUN
 echo "Ended LAUNCHER"
 unset LAUNCHER_PPN
+
+rm "$PARAM"
 
 echo "Done."
