@@ -244,6 +244,12 @@ node an interactive session as Singularity use is not allowed on head nodes:
     $ singularity exec lc.img lc.py app.json
     There are "59" lines in "app.json"
 
+# Testing HPC
+
+Stampede apps will be submitted to SLURM to run, so the first step in testing 
+is that you can successfully submit a job and run to completion. Here I'll 
+`sbatch test.sh` and see how it goes:
+
 # Author
 
 Ken Youens-Clark <kyclark@email.arizona.edu>
