@@ -91,12 +91,17 @@ This file will contain placeholders for each of the input/parameter
 `id`s that you define in the "app.json." These will be expanded at run
 time into literal values passed from Agave. E.g., if you defined an "INPUT"
 argument to have a "-i " prepended, then if the user provides "myinput.txt"
-as the `INPUT` argument, `${INPUT}` will be turned into `-i myinput.txt`.
-If you change anything in the "app.json," be sure to update "template.sh" 
-so that the argument is represented in the "template.sh" file.
+as the `INPUT` argument, `${INPUT}` will be turned into `-i myinput.txt`; 
+if the user does not provide an argument (i.e., it's not required),
+then there will be nothing substituted into the `${INPUT}` (i.e., you
+don't have to worry that there will be "-i" with nothing following
+it).  
+
+**NB:** If you change anything in the "app.json," be sure to update 
+"template.sh" so that the argument is represented in the "template.sh" file.
 
 The template can pass the users arguments to any program you like. I tend 
-to always write a "run.sh" script that is my main entry point. I use bash
+to write a "run.sh" script that is my main entry point. I use bash
 because it has no dependencies and is simple but powerful enough for most
 apps. You could instead call a Python program that exists in your Singularity
 container, but I wouldn't attempt using Python directly on the compute node
@@ -115,7 +120,8 @@ As I said, you don't have to use bash as the main entry point, but it's
 often sufficient. I have many examples where I write entire pipelines in 
 bash (fizkin) and others where I merely pass all the arguments to some 
 more capable program (graftM). If the pipeline needs to use the "launcher" 
-to get parallelization of jobs, I will probably
+to get parallelization of jobs, I will probably stick with bash since
+the launcher is controlled entirely via environmental variables.
 
 ### Makefile
 
@@ -126,17 +132,34 @@ into the execution system.
 
 ### MANIFEST
 
-The only files required to exist in the execution system are the "template"
-and "test" files you indicate in the "app.json." After that, you need to also
-include the Singularity image and any other programs that are referenced,
-e.g., "template.sh" might call "run.sh." I have a program called 
-"copy_from_manifest.py" that looks for the "MANIFEST" and only uploads those
-files into the proper "applications" directory. FWIW, I also have a simple
-bash program called "upload-file.sh" that deletes a file before uploading it
-as I have had problems with Agave actually merging my new and old files into
-and unusable mishmash.
+The only files required to exist in the execution system are the
+"template" and "test" files you indicate in the "app.json." After
+that, you need to also include the Singularity image and any other
+programs that are referenced, e.g., "template.sh" might call "run.sh."
+I have a program called "copy_from_manifest.py" that looks for a file
+called "MANIFEST" and only uploads those files into the proper
+"applications" directory.  
+
+I also have a simple bash program called "upload-file.sh" that I use 
+to upload a single file rather than everything in MANIFEST. Because of
+the time it takes to copy large files (see below), I usually only use
+"copy_from_manifest.py" the first time I upload my files. I found it
+necessary to write "upload-file.sh" because I found Agave would sometimes 
+merge my new and old files into and unusable mishmash. This program
+first does a `files-delete` before uploading the new file.
 
 # Singularity
+
+Back in the bad olde days, we'd install all the dependecies (R/Python
+modules, extra binaries, etc.) into our $HOME directory which would be 
+mounted at runtime. This method fails, however, once the app is made
+public and runs under a different user and environment. The only sane
+way to package an app is to use a container that has all the programs
+and dependencies contained within. Docker basically works, but it
+requires root to run which is not going to happen on any shared HPC.
+Enter Singularity which basically extended Docker to fix this security
+hole. If you can make a Docker container, you can easily create one in
+Singularity.
 
 ## Biocontainers
 
@@ -459,7 +482,7 @@ our Cyverse "home" directory to find something appropriate. I will use
 
     $ make job
     jobs-submit -F job.json
-    Successfully submitted job 665196012540653080-242ac113-0001-007
+    Successfully submitted job 8145541748635865576-242ac113-0001-007
 
 I can use the `jobs-status` command with the "-W" flag to "watch" the job
 go through it's normal staging/queueing/running phases. When the job
@@ -549,6 +572,10 @@ Slack, probably Fonner) to have the app be made public. The public app
 ID will usually have "u\d+" appended, e.g.,
 "stampede2-template-0.0.1u1". If you provide this ID to me, I can add
 it to the apps listed on iMicrobe so that our users can run it.
+
+# See Also
+
+https://cyverse.github.io/cyverse-sdk/docs/cyversesdk.html
 
 # Author
 
