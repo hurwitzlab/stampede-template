@@ -14,7 +14,7 @@ It's not necessary to have the same username, but it is convenient.
 In order to test your application, you will need to be added to the 
 "iPlant-Collabs" allocation (what account to charge for the time your jobs
 use on Stampede2). It's best to get on the Agave Slack channel
-and talk to someone like Matt Vaughn or John Fonner. 
+(agaveapi.slack.com) and talk to someone like Matt Vaughn or John Fonner. 
 
 You will also need to install the Cyverse SDK 
 (https://github.com/cyverse/cyverse-sdk) and learn how to get that to work.
@@ -517,7 +517,38 @@ down the file:
 Our job didn't create any output on disk, just STDOUT which we can
 view in the jobs "*.out" file:
 
+You can use the `jobs-history` to see all the steps:
 
+    $ jobs-history 6867351645227511320-242ac113-0001-007
+    Job accepted and queued for submission.
+    Attempt 1 to stage job inputs
+    Identifying input files for staging
+    Copy in progress
+    Job inputs staged to execution system
+    Preparing job for submission.
+    Attempt 1 to submit job
+    Fetching app assets from agave://data.iplantcollaborative.org/kyclark/applications/stampede2-template-0.0.1/stampede
+    Staging runtime assets to agave://tacc-stampede-kyclark/kyclark/job-6867351645227511320-242ac113-0001-007-stampede2-template-test-1523559134
+    HPC job successfully placed into serial queue as local job 8758967
+    Job started running
+    Job completed execution
+    Beginning to archive output.
+    Attempt 1 to archive job output
+    Archiving agave://tacc-stampede-kyclark/kyclark/job-6867351645227511320-242ac113-0001-007-stampede2-template-test-1523559134 to agave://data.iplantcollaborative.org/kyclark/archive/jobs/job-6867351645227511320-242ac113-0001-007
+    Job archiving completed successfully.
+    Job complete
+
+# Sharing and Publishing App
+
+You can now use your app, submitting jobs from any place you have installed 
+the Cyverse SDK. You can also share you app with another user, but you will
+also have to share your execution and deployment systems. 
+
+To deploy an app to iMicrobe, it's necessary to request (via Agave
+Slack, probably Fonner) to have the app be made public. The public app
+ID will usually have "u\d+" appended, e.g.,
+"stampede2-template-0.0.1u1". If you provide this ID to me, I can add
+it to the apps listed on iMicrobe so that our users can run it.
 
 # Author
 
