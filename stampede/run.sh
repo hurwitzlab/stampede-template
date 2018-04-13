@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH -J template
+#SBATCH -J lc
 #SBATCH -N 1
 #SBATCH -n 1
 #SBATCH -p normal

@@ -488,7 +488,7 @@ I can use the `jobs-status` command with the "-W" flag to "watch" the job
 go through it's normal staging/queueing/running phases. When the job
 reaches "FINISHED," the watch will end:
 
-    Watching job 665196012540653080-242ac113-0001-007
+    Watching job 8145541748635865576-242ac113-0001-007
     Thu Apr 12 14:01:18 CDT 2018
     FINISHED
     Terminating watch
@@ -511,15 +511,15 @@ Any files you write will be copied along with all the inputs back into
 the users DS. The Singularity image will be deleted. You can use 
 `jobs-output-list` to see what the job created:
 
-    $ jobs-output-list 665196012540653080-242ac113-0001-007
+    $ jobs-output-list 8145541748635865576-242ac113-0001-007
     fasta
     .agave.log
-    stampede2-template-test-1523559134-665196012540653080-242ac113-0001-007.err
-    stampede2-template-test-1523559134-665196012540653080-242ac113-0001-007.out
+    stampede2-template-test-1523563854-8145541748635865576-242ac113-0001-007.err
+    stampede2-template-test-1523563854-8145541748635865576-242ac113-0001-007.out
 
 Here you can see the "fasta" directory that was copied to the node:
 
-    $ jobs-output-list 665196012540653080-242ac113-0001-007 fasta
+    $ jobs-output-list 8145541748635865576-242ac113-0001-007 fasta
     Dolphin_1_z04.fa
     Dolphin_2_z09.fa
     Dolphin_3_z11.fa
@@ -531,18 +531,75 @@ Here you can see the "fasta" directory that was copied to the node:
 Along with the standard ".agave.log" file. To view that, we can bring
 down the file:
 
-    $ jobs-output-get 665196012540653080-242ac113-0001-007 .agave.log
+    $ jobs-output-get 8145541748635865576-242ac113-0001-007 .agave.log
     ######################################################################## 100.0%
     $ cat .agave.log
-    [2018-04-12T13:59:20-0500] {"status":"success","message":null,"version":"2.2.19-rb3e2018","result":{"id":"665196012540653080-242ac113-0001-007","status":"RUNNING"}}
-    [2018-04-12T13:59:43-0500] {"status":"success","message":null,"version":"2.2.19-rb3e2018","result":{"id":"665196012540653080-242ac113-0001-007","status":"CLEANING_UP"}}
+    [2018-04-12T15:19:40-0500]
+    [2018-04-12T20:32:01-0500] {"status":"success","message":null,"version":"2.2.19-rb3e2018","result":{"id":"8145541748635865576-242ac113-0001-007","status":"RUNNING"}}
+    [2018-04-12T20:32:09-0500] {"status":"success","message":null,"version":"2.2.19-rb3e2018","result":{"id":"8145541748635865576-242ac113-0001-007","status":"CLEANING_UP"}}
 
 Our job didn't create any output on disk, just STDOUT which we can
 view in the jobs "*.out" file:
 
-You can use the `jobs-history` to see all the steps:
+    $ jobs-output-get 8145541748635865576-242ac113-0001-007 stampede2-template-test-1523563854-8145541748635865576-242ac113-0001-007.out
+    $ cat stampede2-template-test-1523563854-8145541748635865576-242ac113-0001-007.out
+    I will process NUM_INPUT "7" at PVALUE "0.01"
+         1	fasta/Dolphin_7_z22.fa
+         2	fasta/Dolphin_1_z04.fa
+         3	fasta/Dolphin_6_z21.fa
+         4	fasta/Dolphin_3_z11.fa
+         5	fasta/Dolphin_4_z12.fa
+         6	fasta/Dolphin_2_z09.fa
+         7	fasta/Dolphin_8_z26.fa
+    Starting Launcher
+    Launcher: Setup complete.
 
-    $ jobs-history 6867351645227511320-242ac113-0001-007
+    ------------- SUMMARY ---------------
+       Number of hosts:    1
+       Working directory:  /work/03137/kyclark/stampede2/kyclark/job-8145541748635865576-242ac113-0001-007-stampede2-template-test-1523563854
+       Processes per host: 7
+       Total processes:    7
+       Total jobs:         7
+       Scheduling method:  interleaved
+
+    -------------------------------------
+    Launcher: Starting parallel tasks...
+    Launcher: Task 0 running job 1 on c450-103.stampede2.tacc.utexas.edu (singularity exec lc.img lc.py fasta/Dolphin_7_z22.fa)
+    Launcher: Task 1 running job 2 on c450-103.stampede2.tacc.utexas.edu (singularity exec lc.img lc.py fasta/Dolphin_1_z04.fa)
+    Launcher: Task 2 running job 3 on c450-103.stampede2.tacc.utexas.edu (singularity exec lc.img lc.py fasta/Dolphin_6_z21.fa)
+    Launcher: Task 3 running job 4 on c450-103.stampede2.tacc.utexas.edu (singularity exec lc.img lc.py fasta/Dolphin_3_z11.fa)
+    Launcher: Task 5 running job 6 on c450-103.stampede2.tacc.utexas.edu (singularity exec lc.img lc.py fasta/Dolphin_2_z09.fa)
+    Launcher: Task 6 running job 7 on c450-103.stampede2.tacc.utexas.edu (singularity exec lc.img lc.py fasta/Dolphin_8_z26.fa)
+    Launcher: Task 4 running job 5 on c450-103.stampede2.tacc.utexas.edu (singularity exec lc.img lc.py fasta/Dolphin_4_z12.fa)
+    There are "153611" lines in "fasta/Dolphin_4_z12.fa"
+    Launcher: Job 5 completed in 3 seconds.
+    Launcher: Task 4 done. Exiting.
+    There are "206963" lines in "fasta/Dolphin_2_z09.fa"
+    Launcher: Job 6 completed in 3 seconds.
+    There are "243058" lines in "fasta/Dolphin_3_z11.fa"
+    Launcher: Task 5 done. Exiting.
+    Launcher: Job 4 completed in 3 seconds.
+    Launcher: Task 3 done. Exiting.
+    There are "368606" lines in "fasta/Dolphin_8_z26.fa"
+    Launcher: Job 7 completed in 3 seconds.
+    Launcher: Task 6 done. Exiting.
+    There are "426666" lines in "fasta/Dolphin_1_z04.fa"
+    Launcher: Job 2 completed in 3 seconds.
+    Launcher: Task 1 done. Exiting.
+    There are "461033" lines in "fasta/Dolphin_6_z21.fa"
+    Launcher: Job 3 completed in 3 seconds.
+    Launcher: Task 2 done. Exiting.
+    There are "585382" lines in "fasta/Dolphin_7_z22.fa"
+    Launcher: Job 1 completed in 3 seconds.
+    Launcher: Task 0 done. Exiting.
+    Launcher: Done. Job exited without errors
+    Ended LAUNCHER
+    Done.
+
+You can use the `jobs-history` to see all the steps Agave took to stage
+and run the job:
+
+    $ jobs-history 8145541748635865576-242ac113-0001-007
     Job accepted and queued for submission.
     Attempt 1 to stage job inputs
     Identifying input files for staging
@@ -551,13 +608,13 @@ You can use the `jobs-history` to see all the steps:
     Preparing job for submission.
     Attempt 1 to submit job
     Fetching app assets from agave://data.iplantcollaborative.org/kyclark/applications/stampede2-template-0.0.1/stampede
-    Staging runtime assets to agave://tacc-stampede-kyclark/kyclark/job-6867351645227511320-242ac113-0001-007-stampede2-template-test-1523559134
-    HPC job successfully placed into serial queue as local job 8758967
+    Staging runtime assets to agave://tacc-stampede2-kyclark/kyclark/job-8145541748635865576-242ac113-0001-007-stampede2-template-test-1523563854
+    HPC job successfully placed into normal queue as local job 1100184
     Job started running
     Job completed execution
     Beginning to archive output.
     Attempt 1 to archive job output
-    Archiving agave://tacc-stampede-kyclark/kyclark/job-6867351645227511320-242ac113-0001-007-stampede2-template-test-1523559134 to agave://data.iplantcollaborative.org/kyclark/archive/jobs/job-6867351645227511320-242ac113-0001-007
+    Archiving agave://tacc-stampede2-kyclark/kyclark/job-8145541748635865576-242ac113-0001-007-stampede2-template-test-1523563854 to agave://data.iplantcollaborative.org/kyclark/archive/jobs/job-8145541748635865576-242ac113-0001-007
     Job archiving completed successfully.
     Job complete
 
